@@ -9,6 +9,7 @@
 .env
 npm-debug.log
 yarn-error.log
+*.log
 .idea
 .vscode
 CODE_OF_CONDUCT.md

@@ -19,7 +19,7 @@ final class RateLimitMiddleware implements MiddlewareInterface
         }
 
         if (!class_exists(Client::class) || !class_exists(UTCDateTime::class)) {
-            throw new \Exception('MongoDB PHP Library is not installed.');
+            return $next($request);
         }
 
         $limit = intval(env('RATE_LIMIT', 120));
