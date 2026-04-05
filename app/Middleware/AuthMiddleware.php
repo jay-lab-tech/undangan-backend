@@ -17,6 +17,10 @@ final class AuthMiddleware implements MiddlewareInterface
 {
     public function handle(Request $request, Closure $next)
     {
+        if ($request->method(Request::OPTIONS)) {
+            return $next($request);
+        }
+
         if ($request->bearerToken()) {
             try {
                 if (!env('JWT_KEY')) {
