@@ -6,6 +6,16 @@ use Core\Http\Respond;
 
 class JsonResponse extends Respond
 {
+    private function withCors(): static
+    {
+        $this->headers
+            ->set('Access-Control-Allow-Origin', '*')
+            ->set('Access-Control-Max-Age', '3600')
+            ->set('Access-Control-Expose-Headers', 'Content-Length, Content-Disposition');
+
+        return $this;
+    }
+
     public function success(array|object|int $data, int|null $code = null): JsonResponse
     {
         if (is_int($data)) {
@@ -13,7 +23,7 @@ class JsonResponse extends Respond
             $data = [$this->codeHttpMessage($code)];
         }
 
-        return $this->setCode($code)->transform([
+        return $this->withCors()->setCode($code)->transform([
             'id' => request()->getRequestId(),
             'data' => $data,
             'error' => null
@@ -27,7 +37,7 @@ class JsonResponse extends Respond
             $error = [$this->codeHttpMessage($code)];
         }
 
-        return $this->setCode($code)->transform([
+        return $this->withCors()->setCode($code)->transform([
             'id' => request()->getRequestId(),
             'data' => null,
             'error' => $error
