@@ -12,9 +12,16 @@ final class CookieMiddleware implements MiddlewareInterface
 {
     public function handle(Request $request, Closure $next)
     {
+        $requestUrl = strval(
+            $request->server->get(
+                'REQUEST_URL',
+                $request->server->get('REQUEST_URI', '')
+            )
+        );
+
         if (
-            strpos($request->server->get('REQUEST_URL'), RouteServiceProvider::$API_PREFIX) !== false
-            && $request->server->get('REQUEST_URL') !== RouteServiceProvider::$API_PREFIX
+            strpos($requestUrl, RouteServiceProvider::$API_PREFIX) !== false
+            && $requestUrl !== RouteServiceProvider::$API_PREFIX
         ) {
             Env::set('COOKIE', 'false');
         }
