@@ -7,11 +7,12 @@ use Core\Http\Request;
 
 class WelcomeController extends Controller
 {
-    public function __invoke(): \Core\View\View
+    public function __invoke(): \Core\Http\Respond
     {
-        return $this->view('welcome', [
-            'data' => 'PHP Framework'
-        ]);
+        return respond()->setContent(json([
+            'status' => true,
+            'message' => 'Undangan backend active'
+        ], 200));
     }
 
     public function migrate(Request $request): string
