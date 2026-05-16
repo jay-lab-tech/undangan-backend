@@ -33,7 +33,7 @@ final class AuthMiddleware implements MiddlewareInterface
                 );
 
                 $user = User::find(intval($token->sub));
-                if (!$user->exist()) {
+                if (!$user || !$user->exist()) {
                     throw new Exception('user not found');
                 }
 
@@ -65,7 +65,7 @@ final class AuthMiddleware implements MiddlewareInterface
         }
 
         $user = User::where('access_key', $valid->key)->limit(1)->first();
-        if (!$user->exist()) {
+        if (!$user || !$user->exist()) {
             return (new JsonResponse)->errorBadRequest(['user not found.']);
         }
 
